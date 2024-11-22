@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PixelController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -30,6 +31,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/{pixel}', [PixelController::class, 'show'])->name('pixels.show');
         Route::put('/{pixel}', [PixelController::class, 'update'])->name('pixels.update');
         Route::delete('/{pixel}', [PixelController::class, 'destroy'])->name('pixels.destroy');
+    });
+
+    Route::prefix('messages')->group(function () {
+        Route::get('/', [MessageController::class, 'index'])->name('messages.index');
+        Route::post('/', [MessageController::class, 'store'])->name('messages.store');
     });
 });
 
