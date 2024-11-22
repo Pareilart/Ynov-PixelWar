@@ -50,19 +50,26 @@ const fetchMessages = async () => {
 
 onMounted(() => {
     fetchMessages();
+
+    window.Echo.channel('post-message-create')
+        .listen('PostMessageCreateEvent', (e) => {
+            console.log('Nouveau message reçu:', e);
+            if (e.message) {
+                messages.value.push({
+                    id: e.message.id,
+                    content: e.message.content,
+                    timestamp: new Date(e.message.created_at).toLocaleTimeString(),
+                    user: e.message.user.name
+                });
+            }
+        });
 });
 
 const sendMessage = async () => {
     if (newMessage.value.trim()) {
         try {
-            const response = await axios.post(route('messages.store'), {
+            await axios.post(route('messages.store'), {
                 content: newMessage.value
-            });
-            messages.value.push({
-                id: response.data.id,
-                content: newMessage.value,
-                timestamp: new Date().toLocaleTimeString(),
-                user: 'Vous'
             });
             newMessage.value = '';
         } catch (error) {

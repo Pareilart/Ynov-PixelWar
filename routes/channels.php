@@ -14,3 +14,7 @@ Broadcast::channel('post-pixel-create', function () {
 Broadcast::channel('post-pixel-delete', function () {
     return true;
 });
+
+Broadcast::channel('post-message-create', function () {
+    return true;
+});
